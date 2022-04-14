@@ -1,0 +1,28 @@
+{
+  "quiz_name": "HTML QUIZ",
+  "quiz_time_in_sec": "600",
+  "quiz_questions":[
+    {
+      "text": "What is HTML full form?",
+      "correct_option_index": 0,
+      "options":[
+        {
+          "index": 0,
+          "text": "Hyper Text Markup Language"
+        },
+                {
+          "index": 1,
+          "text": "Hyper Text Markup Line"
+        },
+                {
+          "index": 2,
+          "text": "Hyper Text Makeup Language"
+        },
+                {
+          "index": 3,
+          "text": "Hyper Teeth Markup Language"
+        }
+      ]
+    }
+  ]
+}
