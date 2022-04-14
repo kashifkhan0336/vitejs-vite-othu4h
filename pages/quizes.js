@@ -1,9 +1,10 @@
 import ArgonStorage from 'argon-storage';
 const store = new ArgonStorage({ compress: true });
 let score = 0;
+let isSubmit = false;
 const quiz = {
   quiz_name: 'HTML QUIZ',
-  quiz_time_in_sec: '600',
+  quiz_time_in_sec: '20',
   quiz_questions: [
     {
       index: 0,
@@ -78,15 +79,14 @@ const quiz = {
 };
 function submit() {
   console.log('Submit function exec!');
-  $('body').css('pointer-events','none').css('filter','blur(1px)')
+  $('body').css('pointer-events', 'none').css('filter', 'blur(1px)');
   quiz.quiz_questions.forEach((q, q_i) => {
     // console.log(store.get(`q_${q_i}`)['ans']);
-    if(store.get(`q_${q_i}`)['ans'] == parseInt(selection())){
-      console.log('correct answer')
+    if (store.get(`q_${q_i}`)['ans'] == parseInt(selection())) {
+      console.log('correct answer');
       score += 1;
-    }else{
-      
-      console.log('Wrong answer')
+    } else {
+      console.log('Wrong answer');
     }
 
     function selection() {
@@ -100,6 +100,10 @@ function submit() {
   console.log(`${score}/${quiz.quiz_questions.length}`);
 }
 $(document).ready(function () {
+  $('.submit').click(function () {
+    submit();
+    isSubmit = true;
+  });
   quiz.quiz_questions.forEach((q, q_i) => {
     $(`input[type=radio][name=radio-${q_i}]`).change(function () {
       console.log('lol');
@@ -107,7 +111,8 @@ $(document).ready(function () {
   });
 });
 if (store.get('auth') == 'YXV0aF9zcw==') {
-  var fiveSeconds = new Date().getTime() + parseInt(quiz.quiz_time_in_sec)* 1000;
+  var fiveSeconds =
+    new Date().getTime() + parseInt(quiz.quiz_time_in_sec) * 1000;
   $('#timer')
     .countdown(fiveSeconds)
     .on('update.countdown', function (event) {
@@ -117,8 +122,11 @@ if (store.get('auth') == 'YXV0aF9zcw==') {
     })
     .on('finish.countdown', function (event) {
       $(this).html('Time UP!');
-      submit();
-      store.remove('auth');
+      if (!isSubmit) {
+        submit();
+        isSubmit = true
+      }
+      localStorage.clear();
     });
   $('#app').append(`<h1>${quiz.quiz_name}</h1>`);
   $('#app').append(`<h1>${quiz.quiz_time_in_sec}</h1>`);
@@ -134,6 +142,7 @@ if (store.get('auth') == 'YXV0aF9zcw==') {
       );
     });
   });
+  $('#app').append("<button class='submit'>Submit</button>");
 } else {
   window.location.href = '/';
 }
