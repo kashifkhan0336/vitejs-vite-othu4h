@@ -1,8 +1,7 @@
 import './style.css';
-import './lib/jquery-3.6.0.js'
-import './lib/jquery.countdown.js'
 import ArgonStorage from 'argon-storage';
 const store = new ArgonStorage({ compress: true });
+import $ from 'jquery'
 
 $(document).ready(function () {
   $('button').click(function () {
