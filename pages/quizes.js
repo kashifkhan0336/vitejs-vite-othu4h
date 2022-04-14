@@ -1,4 +1,6 @@
 import ArgonStorage from 'argon-storage';
+import '../lib/jquery-3.6.0.js'
+import '../lib/jquery.countdown.js'
 const quiz = {
   quiz_name: 'HTML QUIZ',
   quiz_time_in_sec: '600',
