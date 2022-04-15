@@ -2,83 +2,8 @@ import ArgonStorage from 'argon-storage';
 const store = new ArgonStorage({ compress: true });
 let score = 0;
 let isSubmit = false;
-const quiz = {
-  quiz_name: 'HTML QUIZ',
-  quiz_time_in_sec: '20',
-  quiz_questions: [
-    {
-      index: 0,
-      text: 'What is HTML full form?',
-      correct_option_index: 0,
-      options: [
-        {
-          index: 0,
-          text: 'Hyper Text Markup Language',
-        },
-        {
-          index: 1,
-          text: 'Hyper Text Markup Line',
-        },
-        {
-          index: 2,
-          text: 'Hyper Text Makeup Language',
-        },
-        {
-          index: 3,
-          text: 'Hyper Teeth Markup Language',
-        },
-      ],
-    },
-    {
-      index: 1,
-      text: 'What is HTML1 full form?',
-      correct_option_index: 0,
-      options: [
-        {
-          index: 0,
-          text: 'Hyper Text Markup Language',
-        },
-        {
-          index: 1,
-          text: 'Hyper Text Markup Line',
-        },
-        {
-          index: 2,
-          text: 'Hyper Text Makeup Language',
-        },
-        {
-          index: 3,
-          text: 'Hyper Teeth Markup Language',
-        },
-      ],
-    },
-    {
-      index: 2,
-      text: 'What is HTML4 full form?',
-      correct_option_index: 2,
-      options: [
-        {
-          index: 0,
-          text: 'Hyper Text Markup Language',
-        },
-        {
-          index: 1,
-          text: 'Hyper Text Markup Line',
-        },
-        {
-          index: 2,
-          text: 'Hyper Text Makeup Language',
-        },
-        {
-          index: 3,
-          text: 'Hyper Teeth Markup Language',
-        },
-      ],
-    },
-  ],
-};
+const quiz = store.get('c_qz', true);
 function submit() {
-  console.log('Submit function exec!');
   $('body').css('pointer-events', 'none').css('filter', 'blur(1px)');
   quiz.quiz_questions.forEach((q, q_i) => {
     // console.log(store.get(`q_${q_i}`)['ans']);
@@ -100,6 +25,15 @@ function submit() {
   console.log(`${score}/${quiz.quiz_questions.length}`);
 }
 $(document).ready(function () {
+  if (window.performance) {
+    console.info('window.performance works fine on this browser');
+  }
+  console.info(performance.navigation.type);
+  if (performance.navigation.type == performance.navigation.TYPE_RELOAD) {
+    store.remove('auth')
+  } else {
+    console.info('This page is not reloaded');
+  }
   $('.submit').click(function () {
     submit();
     isSubmit = true;
@@ -124,7 +58,7 @@ if (store.get('auth') == 'YXV0aF9zcw==') {
       $(this).html('Time UP!');
       if (!isSubmit) {
         submit();
-        isSubmit = true
+        isSubmit = true;
       }
       localStorage.clear();
     });
